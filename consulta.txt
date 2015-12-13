@@ -1,0 +1,3 @@
+select distinct clave_entidad,clave_municipio,clave_localidad,localidad
+from ueconomicas
+order by localidad

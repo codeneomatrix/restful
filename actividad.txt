@@ -1,0 +1,13 @@
+insert into actividad (nombre) values('Beneficio de productos agrícolas');
+insert into actividad (nombre) values('Camaronicultura');
+insert into actividad (nombre) values('Despepite de algodón');
+insert into actividad (nombre) values('Otros servicios relacionados con la agricultura');
+insert into actividad (nombre) values('Pesca de camarón');
+insert into actividad (nombre) values('Pesca de sardina y anchoveta');
+insert into actividad (nombre) values('Pesca de túnidos');
+insert into actividad (nombre) values('Pesca y captura de peces, crustáceos, moluscos y otras especies');
+insert into actividad (nombre) values('Piscicultura y otra acuicultura, excepto camaronicultura');
+insert into actividad (nombre) values('Servicios de fumigación agrícola');
+insert into actividad (nombre) values('Servicios relacionados con el aprovechamiento forestal');
+insert into actividad (nombre) values('Servicios relacionados con la cría y explotación de animales');
+

@@ -1,0 +1,14 @@
+insert into centrocomercial (nombre) values('');
+insert into centrocomercial (nombre) values('CENTRAL DE ABASTO');
+insert into centrocomercial (nombre) values('CENTRO O PLAZA COMERCIAL');
+insert into centrocomercial (nombre) values('CIUDAD INDUSTRIAL');
+insert into centrocomercial (nombre) values('CORREDOR INDUSTRIAL');
+insert into centrocomercial (nombre) values('EDIFICIO COMERCIAL Y DE SERVIC');
+insert into centrocomercial (nombre) values('ESCUELA');
+insert into centrocomercial (nombre) values('HOTEL');
+insert into centrocomercial (nombre) values('MERCADO PÚBLICO');
+insert into centrocomercial (nombre) values('PARQUE INDUSTRIAL');
+insert into centrocomercial (nombre) values('PASAJE Y ANDADOR COMERCIAL');
+insert into centrocomercial (nombre) values('PLAZUELA COMERCIAL');
+insert into centrocomercial (nombre) values('TIANGUIS, BAZAR O PULGA');
+insert into centrocomercial (nombre) values('ZONA INDUSTRIAL');

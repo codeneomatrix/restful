@@ -1,45 +1,109 @@
-create table ueconomicas
-(ID varchar (10) primary key,
-Nombre varchar (1000),
-Razón_social varchar (150),
-Código varchar (100),
-clase varchar (100),
-Descripcion_personal varchar (100),
-Tipo_vialidad varchar (100),
-Nombre_vialidad varchar (120),
-Tipo_entrevialidad1 varchar (100),
-Nombre_entrevialidad1 varchar (100),
-Tipo_entrevialidad2 varchar (100),
-Nombre_entrevialidad2 varchar (100),
-Tipo_entrevialidad3 varchar (100),
-Nombre_entrevialidad3 varchar (100),
-Número_exterior_kilómetro varchar (100),
-Letra_exterior varchar (100),
-Edificio varchar (100),
-Edificio_piso varchar (100),
-Número_interior varchar (100),
-Letra_interior varchar (100),
-Tipo_asentamiento varchar (100),
-Nombre_asentamiento varchar (100),
-Tipo_centrocomercial varchar (100),
-Centro_comercial varchar (100),
-Número_local varchar (100),
-Código_Postal varchar (100),
-Clave_entidad varchar (100),
-Entidad varchar (100),
-Clave_municipio varchar (100),
-Municipio varchar (100),
-Clave_localidad varchar (100),
-Localidad varchar (100),
-Área_geoestadística varchar (100),
-Manzana varchar (100),
-Número_teléfono varchar (100),
-Correo_electrónico varchar (100),
-Sitio_Internet varchar (100),
-Tipo_establecimiento varchar (100),
-Latitud varchar (100),
-Longitud varchar (100),
-Fecha varchar (100)
+CREATE TABLE entidad(
+   ID  BIGSERIAL PRIMARY KEY,
+   nombre TEXT NOT NULL
 );
 
-COPY ueconomicas FROM '/tmp/DENUE11.csv' WITH DELIMITER AS '|';
+CREATE TABLE municipio(
+   identidad INTEGER,
+   idmunicipio INTEGER,
+   nombre varchar(100) NOT NULL,
+   primary key(identidad,idmunicipio)
+);
+
+CREATE TABLE localidad(
+   identidad INTEGER,
+   idmunicipio INTEGER,
+   idlocalidad INTEGER,
+   nombre TEXT NOT NULL,
+   primary key(identidad,idmunicipio,idlocalidad)
+);
+
+CREATE TABLE asentamiento(
+   ID  SERIAL PRIMARY KEY,
+   nombre TEXT NOT NULL
+);
+
+CREATE TABLE centrocomercial(
+   ID  SERIAL PRIMARY KEY,
+   nombre TEXT NOT NULL
+);
+
+CREATE TABLE actividad(
+   ID  SERIAL PRIMARY KEY,
+   nombre TEXT NOT NULL
+);
+
+CREATE TABLE personal(
+   ID  SERIAL PRIMARY KEY,
+   cantidad TEXT NOT NULL
+);
+
+CREATE TABLE vialidad(
+   ID  SERIAL PRIMARY KEY,
+   nombre TEXT NOT NULL
+);
+
+create table empresa(
+ID INTEGER primary key,
+Nombre TEXT,
+Razón_social TEXT,
+SCIAN TEXT,
+
+tipo_actividad INTEGER references actividad(ID),
+personal INTEGER references personal(ID),
+tipo_vialidad INTEGER references vialidad(ID),
+Nombre_vialidad TEXT,
+Tipo_entrevialidad1 INTEGER references vialidad(ID),
+Nombre_entrevialidad1 TEXT,
+Tipo_entrevialidad2 INTEGER references vialidad(ID),
+Nombre_entrevialidad2 TEXT,
+Tipo_entrevialidad3 INTEGER references vialidad(ID),
+Nombre_entrevialidad3 TEXT,
+Número_exterior_kilómetro INTEGER,
+
+Letra_exterior TEXT,
+Edificio TEXT,
+Edificio_piso TEXT,
+
+Número_interior INTEGER,
+Letra_interior TEXT,
+
+Tipo_asentamiento INTEGER references asentamiento(ID),
+Nombre_asentamiento TEXT,
+
+Tipo_centrocomercial INTEGER references centrocomercial(ID),
+nombre_centrocomercial TEXT,
+Número_local TEXT,
+Código_Postal TEXT,
+
+
+clave_entidad INTEGER references entidad(ID),
+
+clave_municipio INTEGER,
+
+Clave_localidad INTEGER,
+
+
+Área_geoestadística TEXT,
+Manzana TEXT,
+
+Número_teléfono TEXT,
+
+Correo_electrónico TEXT,
+Sitio_Internet TEXT,
+
+Tipo_establecimiento TEXT,
+
+Latitud double precision,
+Longitud double precision,
+Fecha DATE
+);
+
+
+SET DATESTYLE TO 'European';
+
+
+COPY empresa FROM '/tmp/nuevo.csv' WITH DELIMITER AS '|';
+
+
+COPY empresa FROM '/tmp/DENUE11.csv' WITH DELIMITER AS ',';

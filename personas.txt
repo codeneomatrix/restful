@@ -1,0 +1,8 @@
+insert into personal (cantidad) values('0 a 5 personas');
+insert into personal (cantidad) values('6 a 10 personas');
+insert into personal (cantidad) values('11 a 30 personas');
+insert into personal (cantidad) values('31 a 50 personas');
+insert into personal (cantidad) values('51 a 100 personas');
+insert into personal (cantidad) values('101 a 250 personas');
+insert into personal (cantidad) values('251 y más personas');
+
