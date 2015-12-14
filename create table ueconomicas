@@ -44,59 +44,59 @@ CREATE TABLE vialidad(
 );
 
 create table empresa(
-ID INTEGER primary key,
-Nombre TEXT,
-Razón_social TEXT,
-SCIAN TEXT,
+id SERIAL primary key,
+nombre TEXT default '',
+razon_social TEXT default '',
+SCIAN TEXT default '',
 
-tipo_actividad INTEGER references actividad(ID),
-personal INTEGER references personal(ID),
-tipo_vialidad INTEGER references vialidad(ID),
-Nombre_vialidad TEXT,
-Tipo_entrevialidad1 INTEGER references vialidad(ID),
-Nombre_entrevialidad1 TEXT,
-Tipo_entrevialidad2 INTEGER references vialidad(ID),
-Nombre_entrevialidad2 TEXT,
-Tipo_entrevialidad3 INTEGER references vialidad(ID),
-Nombre_entrevialidad3 TEXT,
-Número_exterior_kilómetro INTEGER,
+tipo_actividad INTEGER references actividad(ID) default 1,
+personal INTEGER references personal(ID) default 1,
+tipo_vialidad INTEGER references vialidad(ID) default 1,
+Nombre_vialidad TEXT default '',
+Tipo_entrevialidad1 INTEGER references vialidad(ID) default 1,
+Nombre_entrevialidad1 TEXT default '',
+Tipo_entrevialidad2 INTEGER references vialidad(ID) default 1,
+Nombre_entrevialidad2 TEXT default '',
+Tipo_entrevialidad3 INTEGER references vialidad(ID) default 1,
+Nombre_entrevialidad3 TEXT default '',
+Numero_exterior INTEGER default 0,
 
-Letra_exterior TEXT,
-Edificio TEXT,
-Edificio_piso TEXT,
+Letra_exterior TEXT default '',
+Edificio TEXT default '',
+Edificio_piso TEXT default '',
 
-Número_interior INTEGER,
-Letra_interior TEXT,
+Numero_interior INTEGER default 0,
+Letra_interior TEXT default '',
 
-Tipo_asentamiento INTEGER references asentamiento(ID),
-Nombre_asentamiento TEXT,
+Tipo_asentamiento INTEGER references asentamiento(ID) default 1,
+Nombre_asentamiento TEXT default '',
 
-Tipo_centrocomercial INTEGER references centrocomercial(ID),
-nombre_centrocomercial TEXT,
-Número_local TEXT,
-Código_Postal TEXT,
-
-
-clave_entidad INTEGER references entidad(ID),
-
-clave_municipio INTEGER,
-
-Clave_localidad INTEGER,
+Tipo_centrocomercial INTEGER references centrocomercial(ID) default 1,
+nombre_centrocomercial TEXT default '',
+numero_local TEXT default '',
+Codigo_Postal TEXT default '',
 
 
-Área_geoestadística TEXT,
-Manzana TEXT,
+clave_entidad INTEGER references entidad(ID) default 1,
 
-Número_teléfono TEXT,
+clave_municipio INTEGER default 1,
 
-Correo_electrónico TEXT,
-Sitio_Internet TEXT,
+Clave_localidad INTEGER  default 1,
 
-Tipo_establecimiento TEXT,
 
-Latitud double precision,
-Longitud double precision,
-Fecha DATE
+area_geoestadistica TEXT default '',
+manzana TEXT default '',
+
+Numero_telefonico TEXT default '',
+
+Correo_electronico TEXT default '',
+Sitio_Internet TEXT default '',
+
+Tipo_establecimiento TEXT default '',
+
+Latitud double precision default 32.62893467,
+Longitud double precision default 32.62893467,
+Fecha DATE  default current_date
 );
 
 
