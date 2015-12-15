@@ -28,7 +28,7 @@ if(formato==="text/plain"){
 }
 
 if(formato==="application/xml"){
-texf= js2xmlparser("Agricultura",texf);
+texf= js2xmlparser("Api",texf);
 //return js2xmlparser("Agricultura",texf);
 }
 
@@ -236,6 +236,13 @@ server.put('/api/1.0/entidades/:id/municipios/:id2/localidades/:id3/empresas/:id
 	var idem = req.params.id4;
 
 	if(req.is('application/json')){
+    var salida= "";
+		for(var llave in req.body){
+			//console.log(llave+" = "+req.body[llave]);
+			salida+=llave+" = "+req.body[llave];
+		}
+
+		console.log(salida);
 
 	var data = {
 	razon_social : req.body.razon_social || "default",
@@ -274,7 +281,7 @@ server.put('/api/1.0/entidades/:id/municipios/:id2/localidades/:id3/empresas/:id
 
     if(((/\d/.test(idestado))===true && (/\d/.test(idmun))===true ) && ((/\d/.test(idlo))===true && (/\d/.test(idem))===true)){
 
-	client.query("UPDATE empresa SET razon_social=($1),scian=($2),tipo_actividad=($3),personal=($4),tipo_vialidad=($5),nombre_vialidad=($6),tipo_entrevialidad1=($7),nombre_entrevialidad1=($8),tipo_entrevialidad2=($9),nombre_entrevialidad2=($10),tipo_entrevialidad3=($11),nombre_entrevialidad3=($12),numero_exterior=($13),letra_exterior=($14),edificio=($15),edificio_piso=($16),numero_interior=($17),letra_interior=($18),tipo_asentamiento=($19),nombre_asentamiento=($20),tipo_centrocomercial=($21),nombre_centrocomercial=($22),numero_local=($23),codigo_postal=($24),area_geoestadistica=($25),manzana=($26),numero_telefonico=($27),correo_electronico=($28),sitio_internet=($29),tipo_establecimiento=($30),latitud=($31),longitud=($32) where id=($34)", [data.razon_social,data.scian,data.tipo_actividad,data.personal,data.tipo_vialidad,data.nombre_vialidad,data.tipo_entrevialidad1,data.nombre_entrevialidad1,data.tipo_entrevialidad2,data.nombre_entrevialidad2,data.tipo_entrevialidad3,data.nombre_entrevialidad3,data.numero_exterior,data.letra_exterior,data.edificio,data.edificio_piso,data.numero_interior,data.letra_interior,data.tipo_asentamiento,data.nombre_asentamiento,data.tipo_centrocomercial,data.nombre_centrocomercial,data.numero_local,data.codigo_postal,data.area_geoestadistica,data.manzana,data.numero_telefonico,data.correo_electronico,data.sitio_internet,data.tipo_establecimiento,data.latitud,data.longitud,idem],function(err, result) {
+	client.query("UPDATE empresa SET razon_social=($1),scian=($2),tipo_actividad=($3),personal=($4),tipo_vialidad=($5),nombre_vialidad=($6),tipo_entrevialidad1=($7),nombre_entrevialidad1=($8),tipo_entrevialidad2=($9),nombre_entrevialidad2=($10),tipo_entrevialidad3=($11),nombre_entrevialidad3=($12),numero_exterior=($13),letra_exterior=($14),edificio=($15),edificio_piso=($16),numero_interior=($17),letra_interior=($18),tipo_asentamiento=($19),nombre_asentamiento=($20),tipo_centrocomercial=($21),nombre_centrocomercial=($22),numero_local=($23),codigo_postal=($24),area_geoestadistica=($25),manzana=($26),numero_telefonico=($27),correo_electronico=($28),sitio_internet=($29),tipo_establecimiento=($30),latitud=($31),longitud=($32) where id=($33)", [data.razon_social,data.scian,data.tipo_actividad,data.personal,data.tipo_vialidad,data.nombre_vialidad,data.tipo_entrevialidad1,data.nombre_entrevialidad1,data.tipo_entrevialidad2,data.nombre_entrevialidad2,data.tipo_entrevialidad3,data.nombre_entrevialidad3,data.numero_exterior,data.letra_exterior,data.edificio,data.edificio_piso,data.numero_interior,data.letra_interior,data.tipo_asentamiento,data.nombre_asentamiento,data.tipo_centrocomercial,data.nombre_centrocomercial,data.numero_local,data.codigo_postal,data.area_geoestadistica,data.manzana,data.numero_telefonico,data.correo_electronico,data.sitio_internet,data.tipo_establecimiento,data.latitud,data.longitud,idem],function(err, result) {
 		//console.log(result);
 		console.log(err);
 		if(err===null) res.send(200, formato(["estatus","actualizado"],req.headers.accept));
