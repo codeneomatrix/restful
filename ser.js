@@ -3,19 +3,10 @@ var pg = require('pg');
 var js2xmlparser = require("js2xmlparser");
 
 //postgres
-var conString = "postgres://postgres:josue@192.168.0.2/api";
+var conString = "postgres://postgres:josue@127.0.0.1/api";
 var client = new pg.Client(conString);
 client.connect();         
 //
-
-function respond(req, res, next) {
-  var cuerpo_del_mensaje = {
-    "mensaje": 'HOLA:' + req.params.name
-  }
-  res.send(cuerpo_del_mensaje);
-  next();
-}
-
 
 function formato(arr,formato){
 var texf = {};
@@ -28,7 +19,7 @@ if(formato==="text/plain"){
 }
 
 if(formato==="application/xml"){
-texf= js2xmlparser("Api",texf);
+texf= js2xmlparser("unidadeseconomicas",texf);
 //return js2xmlparser("Agricultura",texf);
 }
 
@@ -41,6 +32,7 @@ server.use(restify.queryParser());
 server.use(restify.bodyParser());
 
 server.get('/api/1.0/entidades', function(req, res, next) {
+res.setHeader('Content-Type', req.headers.accept);
 client.query('SELECT nombre FROM entidad',function(err, result) {
     if(result.rows.length>0){
 			res.send(200, formato(["entidades",result.rows],req.headers.accept));
@@ -52,6 +44,7 @@ client.query('SELECT nombre FROM entidad',function(err, result) {
 });
 
 server.get('/api/1.0/entidades/:id', function(req, res, next) {
+	res.setHeader('Content-Type', req.headers.accept);
 	var idestado = req.params.id;
 	if((/\d/.test(idestado))===true){
 	client.query('SELECT nombre FROM entidad where ID = $1',[idestado],function(err, result) {
@@ -67,6 +60,7 @@ server.get('/api/1.0/entidades/:id', function(req, res, next) {
 });
 
 server.get('/api/1.0/entidades/:id/municipios', function(req, res, next) {
+	res.setHeader('Content-Type', req.headers.accept);
 	var idestado = req.params.id;
 	if((/\d/.test(idestado))===true){
 	client.query('select * from municipio where identidad = $1',[idestado],function(err, result) {
@@ -84,7 +78,7 @@ server.get('/api/1.0/entidades/:id/municipios', function(req, res, next) {
 });
 
 server.get('/api/1.0/entidades/:id/municipios/:id2', function(req, res, next) {
-
+	res.setHeader('Content-Type', req.headers.accept);
 	var idestado = req.params.id;
 	var idmun = req.params.id2;
     if((/\d/.test(idestado))===true && (/\d/.test(idmun))===true ){
@@ -108,6 +102,7 @@ server.get('/api/1.0/entidades/:id/municipios/:id2', function(req, res, next) {
 
 
 server.get('/api/1.0/entidades/:id/municipios/:id2/localidades', function(req, res, next) {
+	res.setHeader('Content-Type', req.headers.accept);
 	var idestado = req.params.id;
 	var idmun = req.params.id2;
     if((/\d/.test(idestado))===true && (/\d/.test(idmun))===true ){
@@ -126,6 +121,7 @@ server.get('/api/1.0/entidades/:id/municipios/:id2/localidades', function(req, r
 
 
 server.get('/api/1.0/entidades/:id/municipios/:id2/localidades/:id3', function(req, res, next) {
+	res.setHeader('Content-Type', req.headers.accept);
 	var idestado = req.params.id;
 	var idmun = req.params.id2;
 	var idlo = req.params.id3;
@@ -145,6 +141,7 @@ server.get('/api/1.0/entidades/:id/municipios/:id2/localidades/:id3', function(r
 
 
 server.get('/api/1.0/entidades/:id/municipios/:id2/localidades/:id3/empresas', function(req, res, next) {
+	res.setHeader('Content-Type', req.headers.accept);
 	var idestado = req.params.id;
 	var idmun = req.params.id2;
 	var idlo = req.params.id3;
@@ -170,6 +167,7 @@ server.get('/api/1.0/entidades/:id/municipios/:id2/localidades/:id3/empresas', f
 });
 
 server.get('/api/1.0/entidades/:id/municipios/:id2/localidades/:id3/empresas/:id4', function(req, res, next) {
+	res.setHeader('Content-Type', req.headers.accept);
 	var idestado = req.params.id;
 	var idmun = req.params.id2;
 	var idlo = req.params.id3;
@@ -193,6 +191,7 @@ server.get('/api/1.0/entidades/:id/municipios/:id2/localidades/:id3/empresas/:id
 
 
 server.post('/api/1.0/entidades/:id/municipios/:id2/localidades/:id3/empresas', function(req, res, next) {
+	res.setHeader('Content-Type', req.headers.accept);
 	var idestado = req.params.id;
 	var idmun = req.params.id2;
 	var idlo = req.params.id3;
@@ -215,13 +214,36 @@ server.post('/api/1.0/entidades/:id/municipios/:id2/localidades/:id3/empresas', 
 			res.send(404,formato(["Error","404","descripcion","Not fount"],req.headers.accept));
 		}
 	});
-
     }else{
-    	
 		res.send(400,formato(["Error","400","descripcion","Bad Request"],req.headers.accept));
 	}
+   }
 
-   }else{
+	if(req.is('application/xml')){
+	var data = {
+		clave_entidad : idestado,
+		clave_localidad:idlo,
+		clave_municipio:idmun,
+		nombre : req.body.nombre || "",
+		};
+
+    if(((/\d/.test(idestado))===true && (/\d/.test(idmun))===true ) && (/\d/.test(idlo))===true){
+	client.query("INSERT INTO empresa (nombre, clave_entidad,clave_localidad, clave_municipio) values($1, $2, $3, $4)", [data.nombre,data.clave_entidad, data.clave_localidad, data.clave_municipio]);
+
+	client.query("select id from empresa where clave_entidad= $1 and clave_localidad=$2 and clave_municipio=$3 and nombre=$4", [data.clave_entidad, data.clave_localidad, data.clave_municipio,data.nombre],function(err, result) {
+		if(result.rows.length>0){
+			res.send(201, formato(["empresas",result.rows],req.headers.accept));
+		}else{
+			res.send(404,formato(["Error","404","descripcion","Not fount"],req.headers.accept));
+		}
+	});
+    }else{
+		res.send(400,formato(["Error","400","descripcion","Bad Request"],req.headers.accept));
+	}
+   }
+
+
+   if((req.is('application/json')==false)&&(req.is('application/xml')==false)){
    	res.send(415,formato(["Error","415","descripcion","Unsupported Media Type"],'application/json'));
    }
 
@@ -230,19 +252,20 @@ server.post('/api/1.0/entidades/:id/municipios/:id2/localidades/:id3/empresas', 
 
 
 server.put('/api/1.0/entidades/:id/municipios/:id2/localidades/:id3/empresas/:id4', function(req, res, next) {
+	res.setHeader('Content-Type', req.headers.accept);
 	var idestado = req.params.id;
 	var idmun = req.params.id2;
 	var idlo = req.params.id3;
 	var idem = req.params.id4;
 
 	if(req.is('application/json')){
-    var salida= "";
+   /* var salida= "";
 		for(var llave in req.body){
 			//console.log(llave+" = "+req.body[llave]);
 			salida+=llave+" = "+req.body[llave];
 		}
-
-		console.log(salida);
+    */
+		console.log(req.body.edificio);
 
 	var data = {
 	razon_social : req.body.razon_social || "default",
@@ -287,13 +310,13 @@ server.put('/api/1.0/entidades/:id/municipios/:id2/localidades/:id3/empresas/:id
 		if(err===null) res.send(200, formato(["estatus","actualizado"],req.headers.accept));
 
 	});
-
     }else{
-    	
 		res.send(400,formato(["Error","400","descripcion","Bad Request"],req.headers.accept));
 	}
+   }
+    
 
-   }else{
+   else{
    	res.send(415,formato(["Error","415","descripcion","Unsupported Media Type"],'application/json'));
    }
 
@@ -305,6 +328,7 @@ server.put('/api/1.0/entidades/:id/municipios/:id2/localidades/:id3/empresas/:id
 
 
 server.del('/api/1.0/entidades/:id/municipios/:id2/localidades/:id3/empresas/:id4',function(req,res){
+	res.setHeader('Content-Type', req.headers.accept);
 	var idestado = req.params.id;
 	var idmun = req.params.id2;
 	var idlo = req.params.id3;

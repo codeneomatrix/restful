@@ -2,8 +2,10 @@ urls:
 
 curl -v -H "Accept: application/json" http://127.0.0.1:8080/api/1.0/entidades
 curl -v -X GET -H "Accept: text/plain" http://127.0.0.1:8080/api/1.0/entidades/2
+curl -v -H "Accept: application/xml" http://127.0.0.1:8080/api/1.0/entidades
 
 curl -v -X GET -H "Accept: application/json" http://127.0.0.1:8080/api/1.0/entidades/2/municipios
+curl -v -X GET -H "Accept: application/xml" http://127.0.0.1:8080/api/1.0/entidades/2/municipios
 curl -v -X GET -H "Accept: text/plain" http://127.0.0.1:8080/api/1.0/entidades/2/municipios
 
 curl -v -X GET -H "Accept: application/json" http://127.0.0.1:8080/api/1.0/entidades/2/municipios/1
