@@ -1,9 +1,9 @@
 var restify = require('restify');
 var pg = require('pg');
 var js2xmlparser = require("js2xmlparser");
-
+//var parser = require('xml2json');
 //postgres
-var conString = "postgres://postgres:josue@192.168.0.2/api";
+var conString = "postgres://postgres:josue@127.0.0.1/api";
 var client = new pg.Client(conString);
 client.connect();         
 //
@@ -48,7 +48,7 @@ for(var i=0; i<arr.length;i=i+2){
 } 
 //console.log(String(formato));
 if(formato==="text/plain"){
- texf=JSON.stringify(texf); 
+ texf=JSON.stringify(texf)+"\n"+String(js2xmlparser("unidadeseconomicas",texf)); 
 }
 
 if(formato==="application/xml"){
@@ -238,7 +238,7 @@ server.post('/api/1.0/entidades/:id/municipios/:id2/localidades/:id3/empresas', 
 		};
 
     if(((/\d/.test(idestado))===true && (/\d/.test(idmun))===true ) && (/\d/.test(idlo))===true){
-	client.query("INSERT INTO empresa (nombre, clave_entidad,clave_localidad, clave_municipio) values($1, $2, $3, $4)", [data.nombre,data.clave_entidad, data.clave_localidad, data.clave_municipio],function(err, result) {res.send(201);});
+	client.query("INSERT INTO empresa (nombre, clave_entidad,clave_localidad, clave_municipio) values($1, $2, $3, $4)", [data.nombre,data.clave_entidad, data.clave_localidad, data.clave_municipio]);
 
 	client.query("select id from empresa where clave_entidad= $1 and clave_localidad=$2 and clave_municipio=$3 and nombre=$4", [data.clave_entidad, data.clave_localidad, data.clave_municipio,data.nombre],function(err, result) {
 		if(result.rows.length>0){
@@ -246,7 +246,7 @@ server.post('/api/1.0/entidades/:id/municipios/:id2/localidades/:id3/empresas', 
 			console.log('/api/1.0/entidades/'+idestado+'/municipios/'+idmun+'/localidades/'+idlo+'/empresas/'+result.rows[0].id);
             res.header('Location','/api/1.0/entidades/'+idestado+'/municipios/'+idmun+'/localidades/'+idlo+'/empresas/'+result.rows[0].id);
             
-			res.send();
+			res.send(201);
 		}
 	});
     }else{
@@ -255,8 +255,8 @@ server.post('/api/1.0/entidades/:id/municipios/:id2/localidades/:id3/empresas', 
    }
 
 	if(req.is('application/xml')){
-		var obj = JSON.stringify(xmlajson(req.body));
-
+		//var obj = xmlajson(req.body));
+	//var json = parser.toJson(xml); //returns a string containing the JSON structure by default
 		console.log(req.body);
 	var data = {
 		clave_entidad : idestado,
@@ -266,7 +266,7 @@ server.post('/api/1.0/entidades/:id/municipios/:id2/localidades/:id3/empresas', 
 		};
 
     if(((/\d/.test(idestado))===true && (/\d/.test(idmun))===true ) && (/\d/.test(idlo))===true){
-	client.query("INSERT INTO empresa (nombre, clave_entidad,clave_localidad, clave_municipio) values($1, $2, $3, $4)", [data.nombre,data.clave_entidad, data.clave_localidad, data.clave_municipio],function(err, result) {res.send(201);});
+	client.query("INSERT INTO empresa (nombre, clave_entidad,clave_localidad, clave_municipio) values($1, $2, $3, $4)", [data.nombre,data.clave_entidad, data.clave_localidad, data.clave_municipio]);
 
 
 	client.query("select id from empresa where clave_entidad= $1 and clave_localidad=$2 and clave_municipio=$3 and nombre=$4", [data.clave_entidad, data.clave_localidad, data.clave_municipio,data.nombre],function(err, result) {
@@ -274,7 +274,7 @@ server.post('/api/1.0/entidades/:id/municipios/:id2/localidades/:id3/empresas', 
 			console.log('/api/1.0/entidades/'+idestado+'/municipios/'+idmun+'/localidades/'+idlo+'/empresas/'+result.rows[0].id);
             res.header('Location','/api/1.0/entidades/'+idestado+'/municipios/'+idmun+'/localidades/'+idlo+'/empresas/'+result.rows[0].id);
             
-			res.send();
+			res.send(201);
 		}
 	});
     }else{
@@ -346,17 +346,17 @@ server.put('/api/1.0/entidades/:id/municipios/:id2/localidades/:id3/empresas/:id
 	client.query("UPDATE empresa SET razon_social=($1),scian=($2),tipo_actividad=($3),personal=($4),tipo_vialidad=($5),nombre_vialidad=($6),tipo_entrevialidad1=($7),nombre_entrevialidad1=($8),tipo_entrevialidad2=($9),nombre_entrevialidad2=($10),tipo_entrevialidad3=($11),nombre_entrevialidad3=($12),numero_exterior=($13),letra_exterior=($14),edificio=($15),edificio_piso=($16),numero_interior=($17),letra_interior=($18),tipo_asentamiento=($19),nombre_asentamiento=($20),tipo_centrocomercial=($21),nombre_centrocomercial=($22),numero_local=($23),codigo_postal=($24),area_geoestadistica=($25),manzana=($26),numero_telefonico=($27),correo_electronico=($28),sitio_internet=($29),tipo_establecimiento=($30),latitud=($31),longitud=($32) where id=($33)", [data.razon_social,data.scian,data.tipo_actividad,data.personal,data.tipo_vialidad,data.nombre_vialidad,data.tipo_entrevialidad1,data.nombre_entrevialidad1,data.tipo_entrevialidad2,data.nombre_entrevialidad2,data.tipo_entrevialidad3,data.nombre_entrevialidad3,data.numero_exterior,data.letra_exterior,data.edificio,data.edificio_piso,data.numero_interior,data.letra_interior,data.tipo_asentamiento,data.nombre_asentamiento,data.tipo_centrocomercial,data.nombre_centrocomercial,data.numero_local,data.codigo_postal,data.area_geoestadistica,data.manzana,data.numero_telefonico,data.correo_electronico,data.sitio_internet,data.tipo_establecimiento,data.latitud,data.longitud,idem],function(err, result) {
 		//console.log(result);
 		console.log(err);
-		if(err===null) res.send(200, formato(["estatus","actualizado"],req.headers.accept));
+		if(err===null) res.send(200);
 
 	});
     }else{
-		res.send(400,formato(["Error","400","descripcion","Bad Request"],req.headers.accept));
+		res.send(400);
 	}
    }
     
 
    else{
-   	res.send(415,formato(["Error","415","descripcion","Unsupported Media Type"],'application/json'));
+   	res.send(415);
    }
 
 
@@ -376,13 +376,13 @@ server.del('/api/1.0/entidades/:id/municipios/:id2/localidades/:id3/empresas/:id
         client.query("DELETE from empresa where clave_entidad= $1 and clave_localidad=$2 and clave_municipio=$3 and id=$4",[idestado,idlo,idmun,idem], function(err, result) {
 
 	  console.log(err);
-		if(err===null) res.send(200, formato(["estatus","eliminado"],req.headers.accept));
+		if(err===null) res.send(200);
 
 	});
 
     }else{
     	
-		res.send(400,formato(["Error","400","descripcion","Bad Request"],req.headers.accept));
+		res.send(400);
 	}
 
 });
